@@ -1,4 +1,4 @@
-import React from 'react';
+import '../../css/home.css';
 import Header from '../components/Header';
 import Posts from '../components/Posts';
 import Sidebar from '../components/Sidebar';

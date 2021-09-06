@@ -1,4 +1,4 @@
-import React from 'react';
+import '../../css/single.css';
 import Sidebar from '../components/Sidebar';
 import SinglePost from '../components/SinglePost';
 

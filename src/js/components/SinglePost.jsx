@@ -1,4 +1,4 @@
-import React from 'react';
+import '../../css/singlePost.css';
 import { IconButton } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 

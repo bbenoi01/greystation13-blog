@@ -1,10 +1,17 @@
 import '../../css/navbar.css';
+import { useContext } from 'react';
+import { Context } from '../../context/Context';
 import { AppBar, Toolbar, IconButton } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
-	const user = true;
+	const { user, dispatch } = useContext(Context);
+
+	const handleLogout = async () => {
+		dispatch({ type: 'LOGOUT' });
+		await sessionStorage.removeItem('token');
+	};
 
 	return (
 		<AppBar position='sticky'>
@@ -42,16 +49,14 @@ const Navbar = () => {
 								WRITE
 							</Link>
 						</li>
-						<li className='nav-list-item'>{user && 'LOGOUT'}</li>
+						<li className='nav-list-item' onClick={handleLogout}>
+							{user && 'LOGOUT'}
+						</li>
 					</ul>
 				</div>
 				<div className='nav-right'>
 					{user ? (
-						<img
-							src='/dj_greystation.jpg'
-							alt='DJ GreySatation13'
-							className='nav-img'
-						/>
+						<img src={user.profilePic} alt='' className='nav-img' />
 					) : (
 						<ul className='nav-list'>
 							<li className='nav-list-item'>

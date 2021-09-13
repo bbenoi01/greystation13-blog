@@ -1,4 +1,5 @@
-import React from 'react';
+import { useContext } from 'react';
+import { Context } from './context/Context';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
@@ -21,7 +22,7 @@ import Register from './js/pages/Register';
 library.add(fab, faGamepad, faSearch, faEdit, faTrashAlt, faPlus, faUserCircle);
 
 const App = () => {
-	const user = false;
+	const { user } = useContext(Context);
 
 	return (
 		<Router>

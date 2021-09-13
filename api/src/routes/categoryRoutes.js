@@ -1,18 +1,17 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const requireAuth = require('../middleware/requireAuth');
-const Category = require('../models/Category');
+
+const Category = mongoose.model('Category');
 
 const router = express.Router();
 
 router.use(requireAuth);
 
 router.get('/categories', async (req, res) => {
-	try {
-		const categories = await Category.find();
-		res.status(200).json(categories);
-	} catch (err) {
-		res.status(200).json(err);
-	}
+	const categories = await Category.find();
+
+	res.send(categories);
 });
 
 router.post('/category', async (req, res) => {
@@ -22,7 +21,7 @@ router.post('/category', async (req, res) => {
 		const savedCategory = await newCategory.save();
 		res.status(200).json(savedCategory);
 	} catch (err) {
-		res.status(500).json(err);
+		res.status.send({ error: err.message });
 	}
 });
 

@@ -63,6 +63,11 @@
 	padding: 10px;
 }
 
+.login-submit:disabled {
+	cursor: not-allowed;
+	background-color: grey;
+}
+
 .login-register-btn {
 	position: absolute;
 	top: 5rem;

@@ -1,37 +1,27 @@
 import '../../css/post.css';
+import { Link } from 'react-router-dom';
 
-const Post = () => {
+const Post = ({ post }) => {
+	const PF = 'http://localhost:3000/images/';
 	return (
 		<div className='post'>
-			<img
-				src='/matrix alt.jpg'
-				alt='Lost in the matrix'
-				className='post-img'
-			/>
+			{post.photo && <img src={PF + post.photo} alt='' className='post-img' />}
 			<div className='post-info'>
 				<div className='post-categories'>
-					<span className='post-category'>PlayStation</span>
+					{post.categories.map((category) => (
+						<span className='post-category'>{category.name}</span>
+					))}
 					<span className='post-category'>Cool Stuff</span>
 				</div>
-				<span className='post-title'>Lorem ipsum dolor sit amet</span>
+				<Link to={`/post/${post.id}`} className='link'>
+					<span className='post-title'>{post.title}</span>
+				</Link>
 				<hr />
-				<span className='post-date'>1 hour ago</span>
+				<span className='post-date'>
+					{new Date(post.createdAt).toDateString()}
+				</span>
 			</div>
-			<p className='post-description'>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores
-				nobis consequatur doloribus nulla commodi placeat aliquid eum, impedit
-				nostrum quam sint sunt, ipsa distinctio necessitatibus totam, laboriosam
-				esse nam a. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-				Asperiores nobis consequatur doloribus nulla commodi placeat aliquid
-				eum, impedit nostrum quam sint sunt, ipsa distinctio necessitatibus
-				totam, laboriosam esse nam a. Lorem ipsum dolor sit amet consectetur
-				adipisicing elit. Asperiores nobis consequatur doloribus nulla commodi
-				placeat aliquid eum, impedit nostrum quam sint sunt, ipsa distinctio
-				necessitatibus totam, laboriosam esse nam a. Lorem ipsum dolor sit amet
-				consectetur adipisicing elit. Asperiores nobis consequatur doloribus
-				nulla commodi placeat aliquid eum, impedit nostrum quam sint sunt, ipsa
-				distinctio necessitatibus totam, laboriosam esse nam a.
-			</p>
+			<p className='post-description'>{post.description}</p>
 		</div>
 	);
 };

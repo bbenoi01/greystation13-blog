@@ -1,8 +1,20 @@
 import '../../css/sidebar.css';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { IconButton } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
+	const [categories, setCategories] = useState([]);
+
+	useEffect(() => {
+		const getCategories = async () => {
+			const res = await axios.get('/categories');
+			setCategories(res.data);
+		};
+		getCategories();
+	});
 	return (
 		<div className='sidebar'>
 			<div className='sidebar-item'>
@@ -21,10 +33,11 @@ const Sidebar = () => {
 			<div className='sidebar-item'>
 				<div className='sidebar-title'>CATEGORIES</div>
 				<ul className='sidebar-list'>
-					<li className='sidebar-list-item'>PlayStation</li>
-					<li className='sidebar-list-item'>Xbox</li>
-					<li className='sidebar-list-item'>Switch</li>
-					<li className='sidebar-list-item'>Cool Stuff</li>
+					{categories.map((category) => (
+						<Link to={`/?category=${category.name}`} className='link'>
+							<li className='sidebar-list-item'>{category.name}</li>
+						</Link>
+					))}
 				</ul>
 			</div>
 			<div className='sidebar-item'>

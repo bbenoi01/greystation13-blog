@@ -1,45 +1,36 @@
 require('./models/User');
-require('./models/Generic');
+require('./models/Image');
+require('./models/Category');
+require('./models/Post');
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
-const multer = require('multer');
 const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
+const imageRoutes = require('./routes/imageRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const postRoutes = require('./routes/postRoutes');
-const userRoutes = require('./routes/userRoutes');
 const requireAuth = require('./middleware/requireAuth');
 
 const app = express();
+
 dotenv.config();
+
+app.use(cors());
+app.use(express.json());
+app.use(express.static('images'));
+app.use(authRoutes);
+app.use(imageRoutes);
+app.use(userRoutes);
+app.use(categoryRoutes);
+app.use(postRoutes);
+
 mongoose.connect(process.env.MONGO_URL, {
 	useNewUrlParser: true,
 	useCreateIndex: true,
 	useUnifiedTopology: true,
 });
-
-const storage = multer.diskStorage({
-	destination: (req, file, cb) => {
-		cb(null, 'images');
-	},
-	filename: (req, file, cb) => {
-		cb(null, req.body.name);
-	},
-});
-
-const upload = multer({ storage: storage });
-app.post('/upload', upload.single('file'), (req, res) => {
-	res.status(200).json('File has been uploaded');
-});
-
-app.use(cors());
-app.use(express.json());
-app.use(authRoutes);
-app.use(categoryRoutes);
-app.use(postRoutes);
-app.use(userRoutes);
-
 mongoose.connection.on('connected', () => {
 	console.log('Connected to mongo instance.');
 });

@@ -1,25 +1,19 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const requireAuth = require('../middleware/requireAuth');
-const Post = require('../models/Post');
+
+const Post = mongoose.model('Post');
 
 const router = express.Router();
 
 router.use(requireAuth);
 
-router.get('/post/:id', async (req, res) => {
-	try {
-		const post = await Post.findById(req.params.id);
-		res.status(200).json(post);
-	} catch (err) {
-		res.status(500).json(err);
-	}
-});
-
 router.get('/posts', async (req, res) => {
 	const username = req.query.user;
 	const category = req.query.category;
+	let posts;
+
 	try {
-		let posts;
 		if (username) {
 			posts = await Post.find(username);
 		} else if (category) {
@@ -35,6 +29,17 @@ router.get('/posts', async (req, res) => {
 	} catch (err) {
 		res.status(500).json(err);
 	}
+
+	res.send(posts);
+});
+
+router.get('/post/:id', async (req, res) => {
+	try {
+		const post = await Post.findById(req.params.id);
+		res.status(200).json(post);
+	} catch (err) {
+		res.status(500).json(err);
+	}
 });
 
 router.post('/post', async (req, res) => {
@@ -45,14 +50,6 @@ router.post('/post', async (req, res) => {
 		res.status(200).json(savedPost);
 	} catch (err) {
 		res.status(500).json(err);
-	}
-
-	try {
-		const post = new Post({ xx, yy, userId: req.user._id });
-		await post.save();
-		res.send(post);
-	} catch (err) {
-		res.status.send({ error: err.message });
 	}
 });
 

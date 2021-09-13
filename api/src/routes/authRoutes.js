@@ -1,20 +1,20 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const User = mongoose.model('User');
 
 const router = express.Router();
 
 router.post('/signup', async (req, res) => {
-	const { username, email, password } = req.body;
+	let userData;
 
 	try {
-		const user = new User({ username, email, password });
+		const user = new User(req.body);
 		await user.save();
-
 		const token = jwt.sign({ userId: user._id }, 'MY_SECERET_KEY');
 		const { password, ...others } = user._doc;
-		res.status(200).json(others, token);
-		// res.send({ token });
+		userData = { ...others, token };
+		res.status(200).json(userData);
 	} catch (err) {
 		if (err.code === 11000) {
 			return res
@@ -28,6 +28,7 @@ router.post('/signup', async (req, res) => {
 
 router.post('/signin', async (req, res) => {
 	const { email, password } = req.body;
+	let userData;
 
 	if (!email || !password) {
 		return res.status(422).send({ error: 'Must provide email and password.' });
@@ -41,9 +42,17 @@ router.post('/signin', async (req, res) => {
 	try {
 		await user.comparePassword(password);
 		const token = jwt.sign({ userId: user._id }, 'MY_SECERET_KEY');
-		const { password, ...others } = user._doc;
-		res.status(200).json(others, token);
-		// res.send({ token });
+		userData = {
+			profilePic: user._doc.profilePic,
+			_id: user._doc._id,
+			username: user._doc.username,
+			email: user._doc.email,
+			createdAt: user._doc.createdAt,
+			updatedAt: user._doc.updatedAt,
+			__v: user._doc.__v,
+			token,
+		};
+		return res.status(200).json(userData);
 	} catch (err) {
 		return res.status(404).send({ error: 'Invalid email or password.' });
 	}

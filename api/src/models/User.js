@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-const UserSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
 	{
 		username: {
 			type: String,
@@ -27,7 +27,7 @@ const UserSchema = new mongoose.Schema(
 
 // Encrypt entered password
 
-UserSchema.pre('save', function (next) {
+userSchema.pre('save', function (next) {
 	const user = this;
 	if (!user.isModified('password')) {
 		return next();
@@ -48,7 +48,7 @@ UserSchema.pre('save', function (next) {
 	});
 });
 
-UserSchema.methods.comparePassword = function (candidatePassword) {
+userSchema.methods.comparePassword = function (candidatePassword) {
 	const user = this;
 
 	return new Promise((resolve, reject) => {
@@ -66,4 +66,4 @@ UserSchema.methods.comparePassword = function (candidatePassword) {
 	});
 };
 
-mongoose.model('User', UserSchema);
+mongoose.model('User', userSchema);

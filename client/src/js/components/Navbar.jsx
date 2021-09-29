@@ -56,7 +56,9 @@ const Navbar = () => {
 				</div>
 				<div className='nav-right'>
 					{user ? (
-						<img src={user.profilePic} alt='' className='nav-img' />
+						<Link to='/settings'>
+							<img src={user.profilePic} alt='' className='nav-img' />
+						</Link>
 					) : (
 						<ul className='nav-list'>
 							<li className='nav-list-item'>

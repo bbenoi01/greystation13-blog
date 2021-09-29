@@ -105,3 +105,9 @@
 	margin-top: 20px;
 	cursor: pointer;
 }
+
+.success-banner {
+	color: green;
+	text-align: center;
+	margin-top: 20px;
+}

@@ -1,12 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const requireAuth = require('../middleware/requireAuth');
 
 const Post = mongoose.model('Post');
 
 const router = express.Router();
-
-router.use(requireAuth);
 
 router.get('/posts', async (req, res) => {
 	const username = req.query.user;
@@ -29,8 +26,6 @@ router.get('/posts', async (req, res) => {
 	} catch (err) {
 		res.status(500).json(err);
 	}
-
-	res.send(posts);
 });
 
 router.get('/post/:id', async (req, res) => {

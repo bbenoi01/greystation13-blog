@@ -1,12 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const requireAuth = require('../middleware/requireAuth');
 
 const Category = mongoose.model('Category');
 
 const router = express.Router();
-
-router.use(requireAuth);
 
 router.get('/categories', async (req, res) => {
 	const categories = await Category.find();

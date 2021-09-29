@@ -1,5 +1,5 @@
 import '../../css/home.css';
-import axios from 'axios';
+import blogApi from '../../api/blog_api';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import Header from '../components/Header';
@@ -12,11 +12,13 @@ const Home = () => {
 
 	useEffect(() => {
 		const fetchPosts = async () => {
-			const res = await axios.get('/posts' + search);
+			const res = await blogApi.get('/posts' + search);
 			setPosts(res.data);
 		};
 		fetchPosts();
 	}, [search]);
+
+	console.log('posts', posts);
 	return (
 		<>
 			<Header />

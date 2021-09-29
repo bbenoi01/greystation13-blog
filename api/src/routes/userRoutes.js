@@ -1,15 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const requireAuth = require('../middleware/requireAuth');
 const bcrypt = require('bcrypt');
 const User = mongoose.model('User');
 const Post = require('../models/Post');
 
 const router = express.Router();
 
-router.use(requireAuth);
-
-router.get('/:id', async (req, res) => {
+router.get('/user/:id', async (req, res) => {
 	try {
 		const user = await User.findById(req.params.id);
 		const { password, ...others } = user._doc;
@@ -19,7 +16,7 @@ router.get('/:id', async (req, res) => {
 	}
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/user/:id', async (req, res) => {
 	if (req.body.userId === req.params.id) {
 		if (req.body.password) {
 			const salt = await bcrypt.genSalt(10);
@@ -42,7 +39,7 @@ router.put('/:id', async (req, res) => {
 	}
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/user/:id', async (req, res) => {
 	if (req.body.userId === req.params.id) {
 		try {
 			const user = await User.findById(req.params.id);

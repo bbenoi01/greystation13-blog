@@ -2,7 +2,7 @@ import '../../css/register.css';
 import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Context } from '../../context/Context';
-import blogApi from '../../axios/blog_api';
+import blogApi from '../../api/blog_api';
 
 const Register = () => {
 	const [username, setUsername] = useState('');

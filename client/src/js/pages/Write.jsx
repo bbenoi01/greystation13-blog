@@ -1,7 +1,7 @@
 import '../../css/write.css';
 import { useContext, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import blogApi from '../../axios/blog_api';
+import blogApi from '../../api/blog_api';
 import { Context } from '../../context/Context';
 
 const Write = () => {
@@ -19,12 +19,14 @@ const Write = () => {
 		};
 		if (file) {
 			const data = new FormData();
-			const filename = Date.now() + file.name;
+			const filename = Date.now() + '-' + file.name;
+			const PF = 'http://localhost:3005/images/';
 			data.append('name', filename);
-			data.append('image', file);
+			data.append('file', file);
+			newPost.photo = PF + filename;
+
 			try {
-				const res = await blogApi.post('/images', data);
-				newPost.photo = res.data.path;
+				await blogApi.post('/upload', data);
 			} catch (err) {
 				console.log(err);
 			}
@@ -52,7 +54,7 @@ const Write = () => {
 						<FontAwesomeIcon icon='plus' className='write-icon' />
 					</label>
 					<input
-						name='image'
+						name='file'
 						type='file'
 						id='file-input'
 						style={{ display: 'none' }}

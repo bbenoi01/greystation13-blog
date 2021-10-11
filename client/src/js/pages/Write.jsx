@@ -16,6 +16,7 @@ const Write = () => {
 			username: user.username,
 			title,
 			desc,
+			userId: user._id,
 		};
 		if (file) {
 			const data = new FormData();
